@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 投标记，记得配置dtd验证文件 -->
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!-- 配置struts -->
+<struts>
+
+	<!-- 指定Web应用的默认编码集，相当于调用 HttpServletRequest的setCharacterEncoding方法 -->   
+     <constant name="struts.i18n.encoding" value="UTF-8" />   
+   <!--    该 属性指定需要Struts 2处理的请求后缀，该属性的默认值是action，即 所有匹配*.action的请求都由Struts 2处理。如 果用户需要指定多个请求后缀，则多个后缀之间以英文逗号（，）隔开 -->  
+    <constant name="struts.action.extension" value="action,," />   
+   <!-- 设 置浏览器是否缓存静态内容，默认值为true（生产环境下使用），开发阶段最好 关闭 -->   
+   <!-- <constant name="struts.serve.static.browserCache " value="false" />  -->  
+   <!-- 当 struts的配置文件修改后，系统是否自动重新加载该文件，默认值为false（生 产环境下使用），开发阶段最好打开 -->  
+   <!--  <constant name="struts.configuration.xml.reload" value="true" />   -->
+    <!-- 开 发模式下使用，这样可以打印出更详细的错误信息 -->   
+	<constant name="struts.devMode" value="true" />   
+
+	<!--
+		package配置包，name自定义.extends继承struts核心包的struts-default
+		namespace配置访问路径
+	-->
+	 <package name="default" extends="json-default" namespace="/sys">
+<!-- 	 	配置拦截组 -->
+		 <interceptors>
+<!-- 		 配置拦截器 -->
+          <interceptor name="loginInterceptor" class="com.bochy.interceptor.LoginInterceptor"></interceptor>
+          <interceptor name="secretInterceptor" class="com.bochy.interceptor.SecretInterceptor"></interceptor>
+<!--           配置拦截栈 -->
+          <interceptor-stack name="myStack">
+<!--           引用默认的拦截栈 -->
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+<!--             引用自定义拦截器 -->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="secretInterceptor"></interceptor-ref>
+          </interceptor-stack>
+       </interceptors>
+      <action name="loginAction_*" class="loginAction" method="{1}" >
+         <result name="success">/success.jsp</result>
+         <result name="error">/error.jsp</result>
+       </action>
+      
+       <action name="saveAction_*" class="saveAction" method="{1}" >
+<!--        引用拦截栈 -->
+           <interceptor-ref name="myStack"></interceptor-ref>
+          <result name="main">/main.jsp</result>
+          <result name="error">/error.jsp</result>
+       </action>
+        <action name="updateAction_*" class="updateAction" method="{1}" >
+           <interceptor-ref name="myStack"></interceptor-ref>
+           <result name="main">/main.jsp</result>
+         <result name="error">/error.jsp</result>
+       </action>
+        <action name="deleteAction_*" class="deleteAction" method="{1}" >
+          <interceptor-ref name="myStack"></interceptor-ref>
+            
+          <result name="main">/main.jsp</result>
+         <result name="error">/error.jsp</result>
+       </action>
+       
+       <action name="selectAction_*" class="selectAction" method="{1}" >
+          <interceptor-ref name="myStack"></interceptor-ref>
+          <result name="main">/main.jsp</result>
+         <result name="error">/error.jsp</result>
+       </action>
+  </package>
+<!--     <package name="package2" extends="struts-default" namespace="/system"> -->
+<!--     		result 配置响应类型： -->
+<!--     		chain: 只能跳转服务器（action）请求转发的形式，带数据响应 -->
+<!--     		dispatcher:只能跳转页面（jsp）请求转发的形式，带数据响应（默认的响应方式） -->
+<!--     		freemarker：处理FreeMarker模板  -->
+<!--     		httpheader：控制特殊HTTP行为的结果类型     -->
+<!--     		redirect：只能跳转页面（jsp）重定向形式，不带数据响应 -->
+<!--     		redirectAction:只能跳转服务器（action）重定向形式，不带数据响应 -->
+<!--     		stream:向浏览器发送InputSream对象，通常用来处理文件下载，还可用于返回AJAX数据  -->
+<!--     		velocity：处理Velocity模板     -->
+<!--     		xslt：处理XML/XLST模板     -->
+<!--     		plainText：显示原始文件内容，例如文件源代码 -->
+    	
+<!--     	<action name="selectEmp_*" class="empAction" method="{1}"> -->
+<!--     			result配置返回结果 -->
+<!--     			name配置返回的结果 -->
+<!--     			type响应的方式 -->
+<!--     		<result name="success" type="chain">LoginAction</result>用chain跳转方式时不能加包名 -->
+<!--     		<result name="success">/success.jsp</result> -->
+<!--     	</action> -->
+    	
+<!--     </package> -->
+<!--     <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">		 -->
+<!-- 		<set-property value="/WEB-INF/ac.xml" property="contextConfigLocation"/>		 -->
+<!-- 	</plug-in> -->
+<include file="/config/struts_fileUpload.xml"></include>
+<include file="/config/struts_download.xml"></include>
+<include file="/config/struts_scanFiles.xml"></include>
+</struts>
