@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/javaee" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0">
+
+	<filter>
+	     <filter-name>struts2</filter-name>
+	     <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		    <!-- 
+		    	配置struts2中的struts.xml相对路径和自定义名字
+		    	struts-default.xml,struts-plugin.xml,自定义struts.xml文件的路径和文件名（如下：包名/文件名）
+		     -->
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>struts-default.xml,struts-plugin.xml,config/struts.xml</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>struts2</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- spring的监听 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+     <!-- 配置spring的监听器 -->
+    <context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/config/applicationContext_*.xml</param-value>
+	</context-param>
+  	<welcome-file-list>
+ 		 <welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+ <package name="download" extends="struts-default" namespace="/download">
+       
+         <action name="downLoadAction_*" class="downLoadAction" method="{1}">
+            <!-- 文件下载，指定相应结果为流 -->
+            <result name="dowloadSuccess" type="stream">
+                <param name="contentType">application/octet-stream</param><!-- 指定MIME类型 -->
+				<param name="contentDisposition">attachment;filename="${fileName}"</param><!-- filename="${fileName}" 获取前台传来的文件名作为下载时的文件名 -->
+				<param name="inputName">inputStream</param><!-- 跟action中存放文件的流对应 -->
+				<param name="bufferSize">4096</param><!-- 下载时缓冲字节数 -->
+            </result>
+            <result name="downloadError">/downloadError.jsp</result>
+         </action>
+  </package>
+    
+   
+    
+</struts>
